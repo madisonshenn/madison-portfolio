@@ -1,5 +1,6 @@
 import { ExperienceItem } from "@/data/experience";
 import { Badge } from "@/components/ui/badge";
+import { ExternalLink } from "lucide-react";
 
 interface TimelineProps {
   items: ExperienceItem[];
@@ -18,7 +19,19 @@ export const Timeline = ({ items, title }: TimelineProps) => {
             
             <div className="space-y-2">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
-                <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
+                {item.link ? (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-lg font-semibold text-primary hover:underline hover:text-primary/80 transition-colors"
+                  >
+                    {item.title}
+                    <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                  </a>
+                ) : (
+                  <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
+                )}
                 <span className="text-sm text-muted-foreground whitespace-nowrap">{item.period}</span>
               </div>
               
