@@ -1,4 +1,4 @@
-// src/components/ProjectDetail.tsx
+// src/pages/ProjectDetail.tsx
 
 import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -11,17 +11,11 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**
- * This version supports BOTH:
+ * Supports BOTH:
  * 1) New tabbed data model (project.tabs with blocks: text/figures/links)
  * 2) Legacy fields (overview/data/approach/results/techStack/links)
  *
- * For legacy projects, tabs will be:
- *  - Problem (overview + data)
- *  - Approach and Workflow (approach)
- *  - Tech Stack (techStack)
- *  - Impact (results + links)
- *
- * Each tab can render inline figures/links when present in the new model.
+ * Images are kept under src/assets/** and resolved at runtime via import.meta.glob.
  */
 
 type ProjectLink = { label: string; url: string };
@@ -31,6 +25,39 @@ type ProjectBlock =
   | { type: "figures"; figures: ProjectFigure[] }
   | { type: "links"; links: ProjectLink[] };
 type ProjectTab = { id: string; label: string; blocks: ProjectBlock[] };
+
+/* ---------- Asset resolver for src/assets/** ---------- */
+// This maps every file under src/assets/** to its built URL (Vite).
+const imageModules = import.meta.glob("../assets/**/*", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+function resolveAsset(rel: string): string {
+  if (!rel) return rel;
+  // Pass through absolute URLs or data URIs
+  if (/^(https?:)?\/\//i.test(rel) || rel.startsWith("data:")) return rel;
+
+  // Normalize leading slashes and stray ./ segments
+  const clean = rel.replace(/^\/+/, "").replace(/^\.\//, "");
+
+  // Common candidates (allow callers to provide "figures/...", "assets/...", or plain filename)
+  const candidates = [
+    `../assets/${clean}`,
+    `../assets/${clean.replace(/^assets\//, "")}`,
+    `../assets/figures/${clean.replace(/^figures\//, "")}`,
+  ];
+
+  for (const key of candidates) {
+    if (imageModules[key]) return imageModules[key];
+  }
+  // Fallback: if caller accidentally passed a relative path that already matches a key
+  if (imageModules[clean]) return imageModules[clean];
+
+  // Last resort: return the input (will 404 if invalid, but won't crash the app)
+  return rel;
+}
+/* ------------------------------------------------------ */
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -58,13 +85,14 @@ const ProjectDetail = () => {
 
   const tabs = normalizeTabs(project);
   const defaultValue = tabs[0]?.id ?? "problem";
+  const tabCols = Math.min(tabs.length || 1, 4); // for grid template
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero */}
         <section className="bg-secondary/30 py-12">
           <div className="container mx-auto px-4 md:px-6">
             <Link to="/projects">
@@ -78,12 +106,11 @@ const ProjectDetail = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
                 {project.title}
               </h1>
-              {project.intro ? (
+              {project.intro && (
                 <p className="text-lg text-muted-foreground mb-6 animate-fade-in">
                   {project.intro}
                 </p>
-              ) : null}
-
+              )}
               {project.skills?.length ? (
                 <div className="flex flex-wrap gap-2 animate-fade-in">
                   {project.skills.map((skill: string, i: number) => (
@@ -97,12 +124,16 @@ const ProjectDetail = () => {
           </div>
         </section>
 
-        {/* Main Content */}
+        {/* Tabs */}
         <section className="py-12">
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-4xl mx-auto">
               <Tabs defaultValue={defaultValue} className="w-full">
-                <TabsList className={`grid w-full grid-cols-${tabs.length} mb-8`}>
+                {/* Inline grid template avoids Tailwind purge problems */}
+                <TabsList
+                  className="grid w-full mb-8"
+                  style={{ gridTemplateColumns: `repeat(${tabCols}, minmax(0, 1fr))` }}
+                >
                   {tabs.map((t) => (
                     <TabsTrigger key={t.id} value={t.id}>
                       {t.label}
@@ -134,11 +165,10 @@ const ProjectDetail = () => {
 
 export default ProjectDetail;
 
-/* ----------------- Helpers ----------------- */
+/* ---------- Helpers ---------- */
 
 function Block({ block, projectTitle }: { block: ProjectBlock; projectTitle: string }) {
   if (block.type === "text") {
-    // Preserve simple line breaks as paragraphs
     return (
       <>
         {block.text.split("\n").map((para, i) => (
@@ -153,19 +183,22 @@ function Block({ block, projectTitle }: { block: ProjectBlock; projectTitle: str
   if (block.type === "figures" && block.figures?.length) {
     return (
       <div className="grid gap-4 sm:grid-cols-2">
-        {block.figures.map((f, i) => (
-          <figure key={i} className="rounded-lg border p-3">
-            <img
-              src={f.src}
-              alt={f.alt ?? f.caption ?? projectTitle}
-              className="w-full h-auto rounded"
-              loading="lazy"
-            />
-            {f.caption ? (
-              <figcaption className="text-sm text-muted-foreground mt-2">{f.caption}</figcaption>
-            ) : null}
-          </figure>
-        ))}
+        {block.figures.map((f, i) => {
+          const url = resolveAsset(f.src);
+          return (
+            <figure key={i} className="rounded-lg border p-3">
+              <img
+                src={url}
+                alt={f.alt ?? f.caption ?? projectTitle}
+                className="w-full h-auto rounded"
+                loading="lazy"
+              />
+              {f.caption ? (
+                <figcaption className="text-sm text-muted-foreground mt-2">{f.caption}</figcaption>
+              ) : null}
+            </figure>
+          );
+        })}
       </div>
     );
   }
@@ -192,18 +225,11 @@ function Block({ block, projectTitle }: { block: ProjectBlock; projectTitle: str
   return null;
 }
 
-/**
- * Build tabs from the new model if present (project.tabs). Otherwise,
- * construct tabs from legacy fields so the page never renders blank.
- */
 function normalizeTabs(project: any): ProjectTab[] {
-  if (Array.isArray(project.tabs) && project.tabs.length) {
-    return project.tabs;
-  }
+  if (Array.isArray(project.tabs) && project.tabs.length) return project.tabs;
 
   const tabs: ProjectTab[] = [];
 
-  // Problem: overview + data
   if (project.overview || project.data) {
     const blocks: ProjectBlock[] = [];
     if (project.overview) blocks.push({ type: "text", text: project.overview });
@@ -211,7 +237,6 @@ function normalizeTabs(project: any): ProjectTab[] {
     tabs.push({ id: "problem", label: "Problem", blocks });
   }
 
-  // Approach and Workflow: approach
   if (project.approach) {
     tabs.push({
       id: "approach",
@@ -220,7 +245,6 @@ function normalizeTabs(project: any): ProjectTab[] {
     });
   }
 
-  // Tech Stack
   if (Array.isArray(project.techStack) && project.techStack.length) {
     tabs.push({
       id: "tech",
@@ -229,7 +253,6 @@ function normalizeTabs(project: any): ProjectTab[] {
     });
   }
 
-  // Impact: results + links
   if (project.results || (Array.isArray(project.links) && project.links.length)) {
     const blocks: ProjectBlock[] = [];
     if (project.results) blocks.push({ type: "text", text: project.results });
@@ -237,7 +260,6 @@ function normalizeTabs(project: any): ProjectTab[] {
     tabs.push({ id: "impact", label: "Impact", blocks });
   }
 
-  // Ensure at least one tab exists
   if (!tabs.length) {
     tabs.push({
       id: "problem",
