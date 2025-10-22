@@ -115,18 +115,18 @@ const Contact = () => {
                     <h2 className="text-2xl font-bold mb-6">Connect</h2>
                     <div className="space-y-4">
                       <a
-                        href="mailto:madison.shen@example.com"
+                        href="mailto:madisonshenn@gmail.com"
                         className="flex items-center gap-4 p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
                       >
                         <Mail className="h-6 w-6 text-primary" />
                         <div>
                           <div className="font-medium">Email</div>
-                          <div className="text-sm text-muted-foreground">madison.shen@example.com</div>
+                          <div className="text-sm text-muted-foreground">madisonshenn@gmail.com</div>
                         </div>
                       </a>
 
                       <a
-                        href="https://linkedin.com/in/madison-shen"
+                        href="https://www.linkedin.com/in/madison-s-0a2523198"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-4 p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
@@ -134,12 +134,12 @@ const Contact = () => {
                         <Linkedin className="h-6 w-6 text-primary" />
                         <div>
                           <div className="font-medium">LinkedIn</div>
-                          <div className="text-sm text-muted-foreground">linkedin.com/in/madison-shen</div>
+                          <div className="text-sm text-muted-foreground">linkedin.com/in/madison-s-0a2523198</div>
                         </div>
                       </a>
 
                       <a
-                        href="https://github.com/madison-shen"
+                        href="https://github.com/madisonshenn"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-4 p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
@@ -147,26 +147,10 @@ const Contact = () => {
                         <Github className="h-6 w-6 text-primary" />
                         <div>
                           <div className="font-medium">GitHub</div>
-                          <div className="text-sm text-muted-foreground">github.com/madison-shen</div>
+                          <div className="text-sm text-muted-foreground">github.com/madisonshenn</div>
                         </div>
                       </a>
                     </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="font-bold mb-2">Location</h3>
-                    <p className="text-muted-foreground">San Francisco Bay Area, CA</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="font-bold mb-2">Availability</h3>
-                    <p className="text-muted-foreground">
-                      Currently open to consulting opportunities and interesting ML projects.
-                    </p>
                   </CardContent>
                 </Card>
               </div>

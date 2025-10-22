@@ -18,8 +18,7 @@ const Projects = () => {
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">Projects</h1>
               <p className="text-lg text-muted-foreground animate-fade-in">
-                A showcase of professional ML work and selected personal projects spanning NLP, 
-                recommendation systems, time series forecasting, and geospatial analytics.
+                A showcase of professional ML work and selected personal projects.
               </p>
             </div>
           </div>

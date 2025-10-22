@@ -11,7 +11,7 @@ export const Footer = () => {
           
           <div className="flex items-center gap-4">
             <a
-              href="https://linkedin.com/in/madison-shen"
+              href="https://www.linkedin.com/in/madison-s-0a2523198"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -20,7 +20,7 @@ export const Footer = () => {
               <Linkedin className="h-5 w-5" />
             </a>
             <a
-              href="https://github.com/madison-shen"
+              href="https://github.com/madisonshenn"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -29,7 +29,7 @@ export const Footer = () => {
               <Github className="h-5 w-5" />
             </a>
             <a
-              href="mailto:madison.shen@example.com"
+              href="mailto:madisonshenn@gmail.com"
               className="text-muted-foreground hover:text-primary transition-colors"
               aria-label="Email"
             >

@@ -26,23 +26,16 @@ const Index = () => {
               <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Madison Shen
               </h1>
-
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-                Data Scientist passionate about 
-                <span className="text-foreground font-medium"> machine learning engineering</span> and <span className="text-foreground font-medium"> applied AI</span>. 
-                Experienced in building and deploying <span className="text-foreground font-medium"> scalable ML pipelines</span> and combining data science with real-world impact.
+                Data Scientist specializing in <span className="text-foreground font-medium">machine learning</span>, 
+                <span className="text-foreground font-medium"> experimentation</span>, and 
+                <span className="text-foreground font-medium"> productionization</span>. 
+                Building scalable ML systems that drive business impact through rigorous analytics and innovative modeling approaches.
               </p>
-
-              <div className="space-y-4 text-muted-foreground leading-relaxed text-lg md:text-xl mt-6">
-                <p className="text-foreground font-medium">
-                  Graduating December 2025 | Seeking <span className="font-semibold">Data Scientist / ML Engineer / Data Engineer / Data Analyst</span> Full-time Opportunity
-                </p>
-              </div>
-
               
               <div className="flex items-center gap-4 pt-4">
                 <a
-                  href="https://www.linkedin.com/in/madison-s-0a2523198"
+                  href="https://linkedin.com/in/madison-shen"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
@@ -51,7 +44,7 @@ const Index = () => {
                   <Linkedin className="h-6 w-6" />
                 </a>
                 <a
-                  href="https://github.com/madisonshenn"
+                  href="https://github.com/madison-shen"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
@@ -60,7 +53,7 @@ const Index = () => {
                   <Github className="h-6 w-6" />
                 </a>
                 <a
-                  href="mailto:madisonshenn@gmail.com"
+                  href="mailto:madison.shen@example.com"
                   className="text-muted-foreground hover:text-primary transition-colors"
                   aria-label="Email"
                 >

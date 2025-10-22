@@ -1,31 +1,3 @@
-// src/data/projects.ts
-
-export type ProjectTabId = "problem" | "workflow" | "tech" | "impact";
-
-export interface ProjectFigure {
-  src: string;          // path under /public or absolute URL
-  caption?: string;
-  alt?: string;
-}
-
-export interface ProjectLink {
-  label: string;
-  url: string;
-}
-
-export interface ProjectBlock {
-  type: "text" | "figures" | "links";
-  text?: string;                 // when type === "text"
-  figures?: ProjectFigure[];     // when type === "figures"
-  links?: ProjectLink[];         // when type === "links"
-}
-
-export interface ProjectTab {
-  id: ProjectTabId;
-  label: string;
-  blocks: ProjectBlock[];
-}
-
 export interface Project {
   id: string;
   title: string;
@@ -33,271 +5,59 @@ export interface Project {
   intro: string;
   thumbnail: string;
   skills: string[];
-
-  // New: tabbed content model (preferred going forward)
-  tabs?: ProjectTab[];
-
-  // Legacy fields (kept so existing projects render without migration)
-  overview?: string;
+  overview: string;
   data?: string;
-  approach?: string;
-  results?: string;
-  techStack?: string[];
+  approach: string;
+  approachImage?: string;
+  results: string;
+  techStack: string[];
   links?: { label: string; url: string }[];
 }
 
 export const projects: Project[] = [
-  // ====== Perennial / Soil-Carbon — uses the new tab model ======
   {
     id: "soil-carbon",
-    title:
-      "End-to-end Predictive Machine Learning Models Pipeline For Carbon Stock Estimates",
+    title: "End-to-end Predictive Machine Learning Models Pipeline For Carbon Stock Estimates",
     category: "professional",
-    intro:
-      "Client project at Perennial (ag-tech). End-to-end ML with XGBoost (point estimates), Quantile RF (quantiles), Optuna tuning, Monte Carlo UQ, tiled inference, and QA for VM0042/VM0032 compliance.",
+    intro: "This is a client project I owned when interning with Perennial. The ML pipeline contains training workflow with XGBoost and Quantile Random Forest, Uncertainty Quantification Workflow, Inference Workflow, and Quality Assurance Workflow. The final deliverables provide point estimate with uncertainty measures for targeting fields and will help with decisions-making like carbon accounting and agricultural practices.",
     thumbnail: "soil-carbon-thumbnail.jpg",
-    skills: [
-      "Python",
-      "Flyte Orchestration",
-      "XGBoost",
-      "Quantile RF",
-      "Google Cloud Platform",
-      "BigQuery",
-      "Optuna",
-      "Hyperparameter Tuning",
-      "Uncertainty Quantification",
-      "Monte Carlo Simulation",
-      "Quality Assurance",
-    ],
-    tabs: [
-      {
-        id: "problem",
-        label: "Problem",
-        blocks: [
-          {
-            type: "text",
-            text:
-              "Project: Soil Carbon & Bulk Density Prediction with Uncertainty Quantification.\n" +
-              "Context: Built during my DS/ML internship at Perennial (soil-carbon MRV for programs like Bayer, Heartland USDA). " +
-              "Estimating SOC% and bulk density (BD) at scale is crucial for carbon stock and verification. Traditional lab measurements are expensive and sparse, creating large spatial and temporal gaps.\n" +
-              "Challenge: Build scalable, reliable models that generalize across regions (U.S. & global cropland), quantify uncertainty, and support carbon-stock estimation & compliance (VM0042 / VM0032).\n" +
-              "Impact: Improved accuracy and trust → more credible reporting across 3M+ acres and stronger sustainability claims.",
-          },
-          {
-            type: "text",
-            text:
-              "The Challenge\n" +
-              "• Accurately estimating SOC% and BD at scale to verify carbon credits and regenerative outcomes.\n" +
-              "• Lab measurements are costly and geographically sparse, leaving gaps across millions of acres.\n" +
-              "Goals\n" +
-              "• Predict SOC% and BD across U.S./global cropland.\n" +
-              "• Quantify uncertainty to meet MRV standards (VM0042/VM0032).\n" +
-              "• Scale efficiently across terabytes of geospatial data.\n" +
-              "This directly supported Bayer’s soil carbon validation by improving model accuracy and enabling transparent uncertainty reporting across 3M+ acres.",
-          },
-          {
-            type: "figures",
-            figures: [
-              // Replace with your assets or remove this block if not needed.
-              {
-                src: "figures/soil-pipeline.png",
-                caption: "End-to-end pipeline overview",
-                alt: "Pipeline diagram",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "workflow",
-        label: "Workflow",
-        blocks: [
-          {
-            type: "text",
-            text:
-              "Tech/Tools: Python (Pandas, GeoPandas, XGBoost, scikit-learn, Optuna, SHAP), Quantile Random Forest (QRF), Flyte workflows, BigQuery, MongoDB, GCS, rasterio/xarray, GitLab CI/CD.\n" +
-              "End-to-End: Data Ingestion → Preprocessing/Feature Eng → XGBoost Training (Point) → QRF Training (Quantiles) → Optuna Optimization → Monte Carlo Simulation (Variance) → Inference (Tiled at Scale) → QA (DBSCAN).",
-          },
-          {
-            type: "text",
-            text:
-              "XGBoost — why & how (inputs/outputs)\n" +
-              "• Chosen for robust non-linear tabular/geospatial modeling.\n" +
-              "• Inputs: ~140k lab samples + 72 satellite/topographic/climate features.\n" +
-              "• Outputs: deterministic SOC% and BD per field/tile.\n" +
-              "• Notes: Flyte-based stratified K-fold with ID/OOD splits; SHAP highlighted NDVI, precipitation, elevation; boosters stored to GCS for reproducible inference.",
-          },
-          {
-            type: "text",
-            text:
-              "Quantile Random Forest — why & how\n" +
-              "• Provides 5th/50th/95th quantiles per sample → uncertainty bands required for regulatory reporting.\n" +
-              "• Trained on same features as XGBoost; coverage tests targeted ~90% of truths within intervals.\n" +
-              "• Produces credible probabilistic estimates for field-level stock aggregation.",
-          },
-          {
-            type: "text",
-            text:
-              "Evaluation Metrics — what & why\n" +
-              "• R² (fit / variance explained)\n" +
-              "• RMSE/MAE (accuracy; penalize large errors)\n" +
-              "• Bias & slope (calibration; detect systematic bias)\n" +
-              "• Coverage% (reliability of uncertainty bounds)",
-          },
-          {
-            type: "text",
-            text:
-              "Optimization — Optuna\n" +
-              "• Bayesian search (100 trials) over max_depth, learning_rate, n_estimators, subsample, colsample_bytree, min_child_weight, lambda, alpha.\n" +
-              "• 8% RMSE reduction; early stopping + parallel trials in Flyte.",
-          },
-          {
-            type: "text",
-            text:
-              "Uncertainty Quantification — Monte Carlo\n" +
-              "• 1,000 draws per field using QRF quantiles / residual resampling to propagate model + input uncertainty into carbon stock.\n" +
-              "• Outputs: mean, variance, and confidence intervals; aggregated for compliance.",
-          },
-          {
-            type: "text",
-            text:
-              "Inference Workflow\n" +
-              "• Pre-tiled rasters (~10 TB) processed via Flyte task arrays (2 km × 2 km tiles).\n" +
-              "• Outputs: SOC%/BD predictions + lower/upper bounds in Zarr/GeoTIFF; summaries to BigQuery dashboards.\n" +
-              "• Continental-scale runtime in under 6 hours.",
-          },
-          {
-            type: "text",
-            text:
-              "QA — DBSCAN\n" +
-              "• Cluster residuals/uncertainty maps to flag spatial anomalies and extrapolation zones.\n" +
-              "• Automated checks + manual review → cleaner, trustworthy maps for Bayer & Heartland.",
-          },
-          {
-            type: "figures",
-            figures: [
-              {
-                src: "figures/shap-summary.png",
-                caption: "SHAP summary (top drivers)",
-                alt: "SHAP summary plot",
-              },
-              {
-                src: "figures/uncertainty-bands.png",
-                caption: "Quantile bands (5/50/95%)",
-                alt: "Uncertainty bands",
-              },
-            ],
-          },
-          {
-            type: "links",
-            links: [
-              {
-                label: "VM0042 Standard",
-                url: "https://verra.org/methodologies/vm0042-methodology-for-improved-agricultural-land-management/",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "tech",
-        label: "Tech Stack",
-        blocks: [
-          {
-            type: "text",
-            text:
-              "Languages/Libraries: Python, Pandas, GeoPandas, scikit-learn, XGBoost, Quantile RF, SHAP, rasterio, xarray.\n" +
-              "Orchestration/Storage: Flyte, BigQuery, MongoDB, Google Cloud Storage, Zarr/GeoTIFF.\n" +
-              "MLOps/Infra: GitLab CI/CD, distributed task arrays, tiled raster processing.",
-          },
-          {
-            type: "links",
-            links: [
-              { label: "Perennial (company site)", url: "https://www.perennial.earth/" },
-            ],
-          },
-        ],
-      },
-      {
-        id: "impact",
-        label: "Impact",
-        blocks: [
-          {
-            type: "text",
-            text:
-              "• Reduced prediction RMSE by 8% via Optuna + feature refinement.\n" +
-              "• Produced quantile-based uncertainty maps aligned with VM0042/VM0032.\n" +
-              "• Enabled scalable cloud inference across millions of acres (<6h runtime).\n" +
-              "• Strengthened client trust for carbon validation (Bayer/Heartland).\n" +
-              "Disclaimer: selected details redacted for confidentiality.",
-          },
-        ],
-      },
-    ],
+    skills: ["Python", "Flyte Orchestration", "XGBoost", "Quantile RF", "Google Cloud Platform", "BigQuery", "Optuna", "Hyperparameter Tuning", "Uncertainty Quantification", "Monte Carlo Simulation", "Quality Assurance"],
+    overview: "Note: Specific client details and proprietary methodologies have been omitted to respect confidentiality agreements.\n\nDeveloped during my Data Science & Machine Learning internship at Perennial, an ag-tech startup specializing in soil carbon MRV (Measurement, Reporting, and Verification) for corporate sustainability and carbon credit programs with clients.\n\nAccurately estimating soil organic carbon (SOC%) and bulk density (BD) at scale is critical for quantifying carbon stock and validating regenerative agricultural practices. However, traditional laboratory measurements are prohibitively expensive and geographically sparse, resulting in significant spatial and temporal data gaps that limit our ability to assess carbon sequestration across large agricultural landscapes.\n\nKey Challenges:\n1. Ambiguous problem definition requiring iterative scoping and stakeholder alignment\n2. Limited training data with notable quality inconsistencies across collection sites\n3. Need for models that generalize across diverse geospatial regions, soil types, and land management practices\n4. Regulatory requirement to quantify prediction uncertainty for compliance with carbon verification standards (VM0042 / VM0032)",
+    data: "",
+    approach: "1. Data Pipeline & Feature Engineering:\nIntegrated ~140,000 soil samples (SOC% and BD measurements) with 72 environmental covariates including satellite imagery (Sentinel-2, Landsat), topographic features (elevation, slope, aspect), and climate variables (temperature, precipitation patterns). Implemented robust data cleaning, spatial join operations, and feature standardization to handle multi-source heterogeneity. Collaborated with Subject Matter Expert and other experienced DS to ensure the quality of the data.\n\n2. Training Workflow:\nModel Architecture\nXGBoost for Point Predictions: Selected for its proven performance with heterogeneous tabular and geospatial data, effectively capturing non-linear relationships between soil properties and environmental features. Implemented stratified 5-fold cross-validation to ensure robust generalization across diverse agricultural settings. Model artifacts serialized as JSON boosters and versioned in GCS for reproducible inference.\n\nQuantile Random Forest (QRF) for Uncertainty Estimation: While XGBoost provides optimal point estimates, QRF generates full prediction distributions by estimating quantiles (5th, 10th, 25th, 50th, 75th, 90th, 95th percentiles). This enables construction of prediction intervals critical for regulatory compliance. Conducted coverage calibration tests to ensure ~90% of observed values fell within the predicted uncertainty bounds.\n\n3. Evaluation Framework\nR² Score: Overall variance explained by the model\nRMSE: Aggregate prediction error with penalty for large deviations\nSlope & Intercept Analysis: Calibration diagnostics to detect systematic bias, particularly for QRF quantile predictions\nCoverage Rate: Validation that uncertainty intervals appropriately capture true values (target: 90% coverage)\n\n4. Hyperparameter Optimization\nImplemented Bayesian optimization using Optuna (100 trials) to tune critical XGBoost hyperparameters: max_depth, learning_rate, n_estimators, subsample, colsample_bytree, min_child_weight, lambda (L2 regularization), and alpha (L1 regularization). Achieved 8% RMSE reduction while improving training efficiency through early stopping and parallelized trial execution within Flyte.\n\n5. Uncertainty Quantification via Monte Carlo Simulation\nTo propagate both model uncertainty and input feature variability into final carbon stock estimates, executed 5,000 Monte Carlo simulations per agricultural field using QRF quantile distributions. Generated spatially explicit layers of predicted mean SOC%, variance maps, and 90% confidence intervals. Aggregated field-level statistics for downstream compliance reporting.\n\n6. Inference Workflow\nDeployed production inference on pre-processed raster tiles. Each tile processed in parallel, generating SOC%, BD, and derived carbon stock (SOC*BD*depth) predictions. Outputs stored in cloud-optimized Zarr and GeoTIFF formats for efficient downstream analysis and visualization.\n\n7. Quality Assurance with DBSCAN\nImplemented spatial outlier detection using DBSCAN clustering on prediction residuals and uncertainty maps. Flagged anomalous spatial patterns indicative of model extrapolation or data artifacts for expert review in GIS. This iterative QA process ensured not only aggregate accuracy but also field-level plausibility.",
+    approachImage: "soil-carbon-pipeline.png",
+    results: "This project directly supported credible carbon stock reporting across 3+ million acres of agricultural land, enabling corporate clients to substantiate sustainability claims and participate in carbon credit markets with regulatory confidence.\n\nQuantifiable Outcomes:\n1. 8% RMSE reduction through systematic hyperparameter tuning and feature engineering\n2. Regulatory-compliant uncertainty quantification with calibrated prediction intervals for VM0042/VM0032 standards\n3. Production-scale geospatial inference processing 10TB+ of satellite and environmental data\n4. Contract renewals: High-quality deliverables and model performance contributed to the renewal of an ending contracts.\n\nKey Learnings:\n1. Navigating ambiguous problem definitions in applied ML requires iterative scoping with domain experts and stakeholders\n2. Not just mean prediction, uncertainty quantification is important in regulated domains like carbon market here, finance, health, etc.\n3. Spatial validation and anomaly detection are essential for maintaining trust in geospatial ML systems; the reasonability and interpretability of the predicted outputs are more important than the machine learning model evaluation metrics in practice.\n4. Effective MLOps (versioning, orchestration, monitoring) is as important as model performance for production impact. E.g. computational complexity, resource requirements, and scaling behaviors.",
+    techStack: ["Python", "SQL (BigQuery)", "Flyte", "Google Cloud Platform", "GCS", "GitLab CI/CD", "pandas", "geopandas", "numpy", "xgboost", "RandomForestQuantileRegressor", "scikit-learn", "scikit-garden", "optuna", "SHAP", "rasterio", "xarray", "matplotlib", "seaborn"],
+    links: []
   },
-
-  // ====== Selected projects — unchanged (legacy fields) ======
   {
     id: "opinionminer",
-    title: "OpinionMiner: NLP on Online Reviews",
+    title: "BERT-based NLP, Network, and Geospatial Analysis for Online Review",
     category: "selected",
-    intro:
-      "End-to-end NLP pipeline extracting sentiment, aspects/topics, and pain points from large-scale product reviews; built dashboards for category insights.",
+    intro: "A multi-dimensional analysis of 1M+ Yelp reviews combining NLP, network analysis, and geospatial methods to uncover user behavior patterns and deliver actionable insights for users, businesses, and the platform.",
     thumbnail: "opinionminer-thumbnail.jpg",
-    skills: ["Python", "spaCy", "Transformers", "LDA/NMF", "FastAPI", "Plotly"],
-    overview:
-      "Built a comprehensive NLP system to automatically analyze millions of product reviews, extracting actionable insights about customer sentiment, product aspects, and pain points. The system powers category-level dashboards for product teams to understand customer feedback at scale.",
-    data:
-      "2M+ product reviews across 50+ categories from e-commerce platforms. Data includes review text, ratings, timestamps, and product metadata. Processed using distributed NLP pipelines.",
-    approach:
-      "Developed multi-stage NLP pipeline: (1) Sentiment analysis using fine-tuned Transformers, (2) Aspect extraction with spaCy NER and dependency parsing, (3) Topic modeling using LDA and NMF for theme discovery, (4) Pain point detection using regex rules and semantic similarity. Built FastAPI backend for real-time analysis and Plotly dashboards for visualization.",
-    results:
-      "Achieved 92% accuracy in sentiment classification and 87% F1-score in aspect extraction. Identified 15+ recurring pain points per category. Enabled product teams to prioritize improvements based on customer feedback volume and sentiment. Reduced manual review analysis time by 95%.",
-    techStack: [
-      "Python",
-      "spaCy",
-      "Transformers (BERT)",
-      "Gensim (LDA/NMF)",
-      "FastAPI",
-      "Plotly Dash",
-      "PostgreSQL",
-      "Elasticsearch",
-    ],
+    skills: ["Python", "MySQL", "NetworkX", "NLP", "VADER", "Geospatial Analysis"],
+    overview: "Analyzed complex, multi-faceted review platform data to extract actionable insights for three stakeholder groups: users seeking quality recommendations, businesses aiming to improve ratings and visibility, and the platform looking to boost engagement and retention. The challenge was integrating diverse data types (reviews, user networks, geolocation, sentiment) into a cohesive analytical framework across 8 metropolitan areas with 300K+ businesses.",
+    approach: "1. Data Engineering: Used MySQL for cleaning, validation, and preprocessing across 6 interconnected datasets (businesses, reviews, users, check-ins)\n2. Geospatial Analysis: Created global/regional visualizations using Basemap and Folium to identify high-density business clusters and track high-value user (HVU) movement patterns\n3. Sentiment Analysis: Applied VADER and AFINN lexicons to quantify review sentiment, extract keyword drivers, and analyze sentiment-rating relationships beyond star scores\n4. Network Analysis: Built friendship graphs with NetworkX, performed community detection using Louvain algorithm, and computed centrality metrics to identify influencers and local micro-communities",
+    results: "1. Delivered multi-stakeholder recommendations: \n- for users, identified that Elite status correlates with review volume over quality; \n- for businesses, found that Nevada/Arizona markets offer highest visibility and that operational consistency beats geography for ratings; \n- for platform, revealed declining registrations despite strong engagement, suggesting need for seasonal campaigns and re-engagement strategies. \n2. Discovered that \"useful\" reviews tend to be longer and more critical (not just positive), and that regional network analysis reveals community structures invisible at global scale.",
+    techStack: ["Python", "MySQL", "Pandas", "NumPy", "NetworkX", "NLTK (VADER, AFINN)", "TextBlob", "Matplotlib", "Basemap", "Folium", "Scikit-learn"],
     links: [
-      { label: "GitHub", url: "https://github.com/madisonshenn/sentiment-geospatial-network-analysis-online-review" },
-      { label: "Demo Dashboard", url: "#" },
-    ],
+      { label: "GitHub", url: "https://github.com/madisonshenn/sentiment-geospatial-network-analysis-online-review" }
+    ]
   },
   {
     id: "newslens",
-    title: "NewsLens: Personalized News Recommendation",
+    title: "Multi-Channel News Recommendation System",
     category: "selected",
-    intro:
-      "Multi-stage recsys for news personalization (candidate generation + ranking), with user profiles, recency, diversity, and dwell-time optimization.",
+    intro: "A scalable CTR prediction pipeline combining collaborative filtering, embedding-based retrieval, and rule-based cold-start strategies to recommend personalized news articles.",
     thumbnail: "newslens-thumbnail.jpg",
-    skills: ["Python", "LightGBM", "DIN", "Airflow", "A/B Testing", "Feature Store"],
-    overview:
-      "Designed and implemented a production-grade personalized news recommendation system using a two-stage architecture: candidate generation for recall and sophisticated ranking for personalization. The system optimizes for engagement while maintaining content diversity and freshness.",
-    data:
-      "10M+ news articles, 500K+ active users, implicit feedback (clicks, dwell time, shares). Features include user reading history, article metadata, real-time trending signals, and contextual features (time, device, location).",
-    approach:
-      "Two-stage pipeline: (1) Candidate generation using collaborative filtering, content similarity, and trending articles (2) Ranking using LightGBM and Deep Interest Network (DIN) with features for user preferences, article quality, recency, and diversity. Implemented feature store for real-time serving. Used Airflow for orchestration and A/B testing framework for evaluation.",
-    results:
-      "Increased average session time by 35% and click-through rate by 28%. Improved content diversity score by 40% while maintaining engagement. Successfully deployed to production serving 500K+ users with <50ms p95 latency. A/B tests showed 15% increase in user retention.",
-    techStack: [
-      "Python",
-      "LightGBM",
-      "TensorFlow",
-      "DIN",
-      "Redis (feature store)",
-      "Apache Airflow",
-      "Flyte",
-      "PostgreSQL",
-      "Docker",
-    ],
+    skills: ["Python", "Collaborative Filtering", "Embedding Retrieval", "Faiss", "Cold-Start Strategy"],
+    overview: "Built a personalized news recommendation engine to predict which articles users are likely to click based on historical browsing behavior. The core challenge was handling massive scale (~300k users, 3M clicks, 360k articles) while addressing cold-start problems for 90% of articles that never appeared in user logs and 20% of users with minimal interaction history.",
+    approach: "Reframed the problem as CTR prediction with a multi-channel recall strategy to balance latency and accuracy:\n\nItemCF & UserCF: Implemented collaborative filtering with custom weighting for click order, time decay, and content similarity\nEmbedding Recall: Used Faiss for efficient approximate nearest neighbor search in article vector space\nCold-Start Solution: Applied rule-based filtering on embeddings considering topic alignment, content length similarity, and recency constraints (90-day window)\nFusion: Combined recall channels with normalized scoring and weighted aggregation to generate top-K recommendations per user",
+    results: "Successfully generated top-5 article recommendations with rank-weighted scoring (1/k penalty). Learned to design scalable retrieval systems by separating candidate generation (recall) from ranking, and discovered that combining multiple weak signals (temporal patterns, content features, collaborative signals) produces more robust recommendations than any single method alone.",
+    techStack: ["Python", "Pandas", "NumPy", "Faiss (vector similarity search)", "Collaborative Filtering", "Embedding-based Retrieval", "Scikit-learn"],
     links: [
-      { label: "GitHub", url: "https://github.com/madisonshenn/news-multichannel-recommendation-system" },
-      { label: "Technical Report", url: "#" },
-    ],
-  },
+      { label: "GitHub", url: "https://github.com/madisonshenn/news-multic" }
+    ]
+  }
 ];
