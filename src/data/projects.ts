@@ -1,3 +1,9 @@
+
+import SoilCarbonThumb from "@/assets/soil-carbon-thumbnail.png";
+import NBEATSThumb from "@/assets/nbeats.png";
+import newsrecsysprojThumb from "@/assets/newslens-thumbnail.png";
+import yelpanalysisThumb from "@/assets/opinionminer-thumbnail.png";
+
 export interface Project {
   id: string;
   title: string;
@@ -20,7 +26,7 @@ export const projects: Project[] = [
     title: "End-to-end Predictive Machine Learning Models Pipeline For Carbon Stock Estimates",
     category: "professional",
     intro: "This is a client project I owned when interning with Perennial. The ML pipeline contains training workflow with XGBoost and Quantile Random Forest, Uncertainty Quantification Workflow, Inference Workflow, and Quality Assurance Workflow. The final deliverables provide point estimate with uncertainty measures for targeting fields and will help with decisions-making like carbon accounting and agricultural practices.",
-    thumbnail: "soil-carbon-thumbnail.png",
+    thumbnail: SoilCarbonThumb,
     skills: ["Python", "Flyte Orchestration", "XGBoost", "Quantile RF", "Google Cloud Platform", "BigQuery", "Optuna", "Hyperparameter Tuning", "Uncertainty Quantification", "Monte Carlo Simulation", "Quality Assurance"],
     overview: "Note: Specific client details and proprietary methodologies have been omitted to respect confidentiality agreements.\n\nDeveloped during my Data Science & Machine Learning internship at Perennial, an ag-tech startup specializing in soil carbon MRV (Measurement, Reporting, and Verification) for corporate sustainability and carbon credit programs with clients.\n\nAccurately estimating soil organic carbon (SOC%) and bulk density (BD) at scale is critical for quantifying carbon stock and validating regenerative agricultural practices. However, traditional laboratory measurements are prohibitively expensive and geographically sparse, resulting in significant spatial and temporal data gaps that limit our ability to assess carbon sequestration across large agricultural landscapes.\n\nKey Challenges:\n1. Ambiguous problem definition requiring iterative scoping and stakeholder alignment\n2. Limited training data with notable quality inconsistencies across collection sites\n3. Need for models that generalize across diverse geospatial regions, soil types, and land management practices\n4. Regulatory requirement to quantify prediction uncertainty for compliance with carbon verification standards (VM0042 / VM0032)",
     data: "",
@@ -35,7 +41,7 @@ export const projects: Project[] = [
     title: "Building Should Cost AI Agent with N-BEATS Neural Networks Time Series Forecasting",
     category: "professional",
     intro: "",
-    thumbnail: "nbeats.png",
+    thumbnail: NBEATSThumb,
     skills: ["Python", "Azure SQL Database", "Azure AI Service", "Serverless Compute", "PyTorch", "Darts", "N-BEATS", "Time Series Forecasting", "Hyperparameter Tuning", "Cross-Validation"],
     overview: "Note: Specific client details and proprietary methodologies have been omitted to respect confidentiality agreements.\n\nProblems of the existing models:\nRaw materials and inputs are critical to the client company, as they directly determine product quality, performance, and cost efficiency. Reliable sourcing of high-quality chemicals, polymers, and additives ensures consistent innovation and compliance with regulatory standards.\n\nCurrent should cost models are developed on the spread sheet, and all the cost drivers are tracked on the spreadsheet, so any updates are manual and error-prone.\n\nCertain cost drivers' values change constantly and they are usually not public or accessible by the client.\n\nBased on above, it's difficult for the client company, specifically the procurement team, to determine what prices to pay during contract negotiation and they have noticed overpayments from the historical data.\n\nProposal from the client:\nEnable better supplier negotiations and help stakeholders to understand the true drivers of material expenses, from feedstock trends to processing and logistics.\n\nTransform the model from a static calculation on spreadsheets into an adaptive, intelligence-driven system.\n\nLeverage real-time data feed and autonomously gather and process key inputs; calculate a robust should-cost price that reflects true cost drivers and market conditions.\n\nThe model can continually refines its assumptions and generate transparent and dynamic pricing insights for 3 selected raw materials.",
     approach: "N-BEATS Neural Networks:\nWhy do we want to choose N-BEATS, over other traditional time series models, classic ML models, or DL frameworks?\n- Do not need feature engineering\n- Proven performance\n- Interpretable variants\n- Works with limited data (Client here only provides 12 months × 4 years of data)\n\nOptimization:\nData Preprocessing\n- Handling Missing Values\n- Normalization\n\nLearning Rate Scheduling\n\nHyperparameter Tuning\n- Random search\n- Fine tuning on key hyperparameters\n- Rolling window cross validation or forward chaining\n\nEvaluation Metrics:\n- Primary metrics: MAPE, RMSE, MAE\n- Secondary metric: directional accuracy\n\nForecasting:\n- Backtesting/walk forward validation",
@@ -49,7 +55,7 @@ export const projects: Project[] = [
     title: "BERT-based NLP, Network, and Geospatial Analysis for Online Review",
     category: "selected",
     intro: "A multi-dimensional analysis of 1M+ Yelp reviews combining NLP, network analysis, and geospatial methods to uncover user behavior patterns and deliver actionable insights for users, businesses, and the platform.",
-    thumbnail: "opinionminer-thumbnail.jpg",
+    thumbnail: yelpanalysisThumb,
     skills: ["Python", "MySQL", "NetworkX", "NLP", "VADER", "Geospatial Analysis"],
     overview: "Analyzed complex, multi-faceted review platform data to extract actionable insights for three stakeholder groups: users seeking quality recommendations, businesses aiming to improve ratings and visibility, and the platform looking to boost engagement and retention. The challenge was integrating diverse data types (reviews, user networks, geolocation, sentiment) into a cohesive analytical framework across 8 metropolitan areas with 300K+ businesses.",
     approach: "1. Data Engineering: Used MySQL for cleaning, validation, and preprocessing across 6 interconnected datasets (businesses, reviews, users, check-ins)\n2. Geospatial Analysis: Created global/regional visualizations using Basemap and Folium to identify high-density business clusters and track high-value user (HVU) movement patterns\n3. Sentiment Analysis: Applied VADER and AFINN lexicons to quantify review sentiment, extract keyword drivers, and analyze sentiment-rating relationships beyond star scores\n4. Network Analysis: Built friendship graphs with NetworkX, performed community detection using Louvain algorithm, and computed centrality metrics to identify influencers and local micro-communities",
@@ -64,7 +70,7 @@ export const projects: Project[] = [
     title: "Multi-Channel News Recommendation System",
     category: "selected",
     intro: "A scalable CTR prediction pipeline combining collaborative filtering, embedding-based retrieval, and rule-based cold-start strategies to recommend personalized news articles.",
-    thumbnail: "newslens-thumbnail.jpg",
+    thumbnail: newsrecsysprojThumb,
     skills: ["Python", "Collaborative Filtering", "Embedding Retrieval", "Faiss", "Cold-Start Strategy"],
     overview: "Built a personalized news recommendation engine to predict which articles users are likely to click based on historical browsing behavior. The core challenge was handling massive scale (~300k users, 3M clicks, 360k articles) while addressing cold-start problems for 90% of articles that never appeared in user logs and 20% of users with minimal interaction history.",
     approach: "Reframed the problem as CTR prediction with a multi-channel recall strategy to balance latency and accuracy:\n\nItemCF & UserCF: Implemented collaborative filtering with custom weighting for click order, time decay, and content similarity\nEmbedding Recall: Used Faiss for efficient approximate nearest neighbor search in article vector space\nCold-Start Solution: Applied rule-based filtering on embeddings considering topic alignment, content length similarity, and recency constraints (90-day window)\nFusion: Combined recall channels with normalized scoring and weighted aggregation to generate top-K recommendations per user",
