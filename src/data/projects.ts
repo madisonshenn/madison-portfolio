@@ -1,8 +1,8 @@
 
 import SoilCarbonThumb from "@/assets/soil-carbon-thumbnail.png";
 import NBEATSThumb from "@/assets/nbeats.png";
-import newsrecsysprojThumb from "@/assets/newslens-thumbnail.png";
-import yelpanalysisThumb from "@/assets/opinionminer-thumbnail.png";
+import newsrecsysprojThumb from "@/assets/newslens-thumbnail.jpg";
+import yelpanalysisThumb from "@/assets/opinionminer-thumbnail.jpg";
 
 export interface Project {
   id: string;

@@ -3,12 +3,25 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Project } from "@/data/projects";
 
+// Import all thumbnail images
+import SoilCarbonThumb from "@/assets/soil-carbon-thumbnail.png";
+import NBEATSThumb from "@/assets/nbeats.png";
+import newsrecsysprojThumb from "@/assets/newslens-thumbnail.jpg";
+import yelpanalysisThumb from "@/assets/opinionminer-thumbnail.jpg";
+
 interface ProjectCardProps {
   project: Project;
 }
 
+const thumbnailMap: Record<string, string> = {
+  "soil-carbon-thumbnail.png": SoilCarbonThumb,
+  "forecasting-thumbnail.png": NBEATSThumb,
+  "opinionminer-thumbnail.jpg": yelpanalysisThumb,
+  "newslens-thumbnail.jpg": newsrecsysprojThumb,
+};
+
 export const ProjectCard = ({ project }: ProjectCardProps) => {
-  const imageSrc = `/src/assets/${project.thumbnail}`;
+  const imageSrc = thumbnailMap[project.thumbnail] || project.thumbnail;
   
   return (
     <Link to={`/projects/${project.id}`}>
