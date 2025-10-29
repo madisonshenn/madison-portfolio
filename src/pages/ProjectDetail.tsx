@@ -8,6 +8,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Import all images from assets
+const images = import.meta.glob('@/assets/*.{png,jpg,jpeg}', { eager: true, import: 'default' }) as Record<string, string>;
+
 const ProjectDetail = () => {
   const { id } = useParams();
   const project = projects.find(p => p.id === id);
@@ -32,7 +35,12 @@ const ProjectDetail = () => {
     );
   }
 
-  const imageSrc = `/src/assets/${project.thumbnail}`;
+
+  // Helper function to get image path
+  const getImageSrc = (filename: string) => {
+    const imagePath = `/src/assets/${filename}`;
+    return images[imagePath] || '';
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -134,7 +142,7 @@ const ProjectDetail = () => {
                       {project.approachImage && (
                         <div className="mb-6">
                           <img 
-                            src={`/src/assets/${project.approachImage}`} 
+                            src={getImageSrc(project.approachImage)} 
                             alt="Project workflow diagram"
                             className="w-full rounded-lg border border-border"
                           />

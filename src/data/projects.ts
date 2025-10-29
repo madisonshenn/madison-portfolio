@@ -31,6 +31,20 @@ export const projects: Project[] = [
     links: []
   },
   {
+    id: "should-cost-ai",
+    title: "Building Should Cost AI Agent with N-BEATS Neural Networks Time Series Forecasting",
+    category: "professional",
+    intro: "",
+    thumbnail: "should-cost-pipeline.png",
+    skills: ["Python", "Azure SQL Database", "Azure AI Service", "Serverless Compute", "PyTorch", "Darts", "N-BEATS", "Time Series Forecasting", "Hyperparameter Tuning", "Cross-Validation"],
+    overview: "Note: Specific client details and proprietary methodologies have been omitted to respect confidentiality agreements.\n\nProblems of the existing models:\nRaw materials and inputs are critical to the client company, as they directly determine product quality, performance, and cost efficiency. Reliable sourcing of high-quality chemicals, polymers, and additives ensures consistent innovation and compliance with regulatory standards.\n\nCurrent should cost models are developed on the spread sheet, and all the cost drivers are tracked on the spreadsheet, so any updates are manual and error-prone.\n\nCertain cost drivers' values change constantly and they are usually not public or accessible by the client.\n\nBased on above, it's difficult for the client company, specifically the procurement team, to determine what prices to pay during contract negotiation and they have noticed overpayments from the historical data.\n\nProposal from the client:\nEnable better supplier negotiations and help stakeholders to understand the true drivers of material expenses, from feedstock trends to processing and logistics.\n\nTransform the model from a static calculation on spreadsheets into an adaptive, intelligence-driven system.\n\nLeverage real-time data feed and autonomously gather and process key inputs; calculate a robust should-cost price that reflects true cost drivers and market conditions.\n\nThe model can continually refines its assumptions and generate transparent and dynamic pricing insights for 3 selected raw materials.",
+    approach: "N-BEATS Neural Networks:\nWhy do we want to choose N-BEATS, over other traditional time series models, classic ML models, or DL frameworks?\n- Do not need feature engineering\n- Proven performance\n- Interpretable variants\n- Works with limited data (Client here only provides 12 months × 4 years of data)\n\nOptimization:\nData Preprocessing\n- Handling Missing Values\n- Normalization\n\nLearning Rate Scheduling\n\nHyperparameter Tuning\n- Random search\n- Fine tuning on key hyperparameters\n- Rolling window cross validation or forward chaining\n\nEvaluation Metrics:\n- Primary metrics: MAPE, RMSE, MAE\n- Secondary metric: directional accuracy\n\nForecasting:\n- Backtesting/walk forward validation",
+    approachImage: "should-cost-pipeline.png",
+    results: "This is an ongoing project expected to end in December 2025, but according to the client company, raw materials represent a significant share (> 70%) of overall production costs, making transparency into their pricing essential for competitiveness.",
+    techStack: ["Python", "Azure SQL Database", "Azure AI Service", "Serverless Compute", "PyTorch", "Darts", "N-BEATS Neural Networks", "Time Series Forecasting", "Hyperparameter Tuning", "Cross-Validation"],
+    links: []
+  },
+  {
     id: "opinionminer",
     title: "BERT-based NLP, Network, and Geospatial Analysis for Online Review",
     category: "selected",

@@ -27,7 +27,12 @@ const Projects = () => {
         {/* Professional Projects Section */}
         <section className="py-16">
           <div className="container mx-auto px-4 md:px-6">
-            <h2 className="text-3xl font-bold mb-8">Professional Experience Projects</h2>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold mb-2">Professional Experience</h2>
+              <p className="text-sm text-muted-foreground">
+                Note: Specific client details and proprietary methodologies have been omitted to respect confidentiality agreements.
+              </p>
+            </div>
             <div className="space-y-6">
               {professionalProjects.map((project, index) => (
                 <div 
